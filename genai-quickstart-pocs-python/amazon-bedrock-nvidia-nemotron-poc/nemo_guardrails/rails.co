@@ -1,0 +1,51 @@
+# Deterministic, action-based rails for the compliance assistant.
+# Input rails run on $user_message; output rails run on $bot_message.
+
+# ── Bot messages ───────────────────────────────────────────────────────────────
+define bot refuse jailbreak
+  "I'm a financial regulatory compliance assistant and can't fulfill that request. Please ask a question about SEC, FINRA, OCC, FinCEN, or CFPB regulations."
+
+define bot inform off topic
+  "I'm a financial regulatory compliance assistant. Please ask a compliance-related question about SEC, FINRA, OCC, FinCEN, or CFPB regulations."
+
+define bot inform unverified response
+  "I could not fully verify this answer against the retrieved regulatory documents. Please consult the original regulatory text directly."
+
+# ── Input rail: jailbreak / prompt injection ───────────────────────────────────
+define flow check jailbreak
+  $blocked = execute check_jailbreak(text=$user_message)
+  if $blocked
+    bot refuse jailbreak
+    stop
+
+# ── Input rail: PII masking (modifies the message in place) ─────────────────────
+define flow anonymize pii
+  $sanitized = execute anonymize_pii(text=$user_message)
+  if $sanitized != $user_message
+    $user_message = $sanitized
+
+# ── Input rail: topic gate ──────────────────────────────────────────────────────
+define flow check topic relevance
+  $off_topic = execute check_off_topic(text=$user_message)
+  if $off_topic
+    bot inform off topic
+    stop
+
+# ── Main dialog: answer via the RAG action ──────────────────────────────────────
+# ── Output rail: produce the grounded RAG answer (replaces the raw LLM answer) ──
+define flow generate grounded answer
+  $answer = execute rag_answer(query=$last_user_message)
+  $bot_message = $answer
+
+# ── Output rail: fact-check / grounding ─────────────────────────────────────────
+define flow check hallucination
+  $grounded = execute check_grounding(response=$bot_message, retrieved=$retrieved_context)
+  if not $grounded
+    bot inform unverified response
+    stop
+
+# ── Output rail: citation validation ────────────────────────────────────────────
+define flow validate citations
+  $valid = execute validate_citation_format(response=$bot_message)
+  if not $valid
+    $bot_message = execute add_citation_disclaimer(response=$bot_message)
