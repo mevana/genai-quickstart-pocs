@@ -1,0 +1,32 @@
+# Staging configuration used by CI/CD before promotion to production.
+#
+# Inherits the same shape as config/default.yaml. Teams can tighten thresholds
+# in staging to catch regressions earlier in the release pipeline.
+
+aws:
+  region: "us-east-1"
+  bedrock_model_id: "global.anthropic.claude-sonnet-4-6"
+
+invoker:
+  default: "gateway"
+
+  gateway:
+    gateway_id_env: "AGENTCORE_GATEWAY_ID"
+    timeout_seconds: 30
+
+  connect:
+    instance_id_env: "CONNECT_INSTANCE_ID"
+    contact_flow_id_env: "CONNECT_CONTACT_FLOW_ID"
+    response_timeout_seconds: 45
+    poll_interval_seconds: 1.0
+
+metrics:
+  correctness_threshold: 0.5
+  relevancy_threshold: 0.7
+  guardrail_threshold: 0.7
+
+test_cases:
+  path: "data/regression_tests.json"
+
+reports:
+  output_dir: "reports/staging"
