@@ -1,0 +1,27 @@
+# NeMo Guardrails configuration for the Amazon Bedrock NVIDIA Nemotron POC.
+# The main model runs on Amazon Bedrock (via the langchain-aws provider).
+# Rails and the RAG answer are implemented as custom actions in actions.py.
+
+# The main LLM (NVIDIA Nemotron 3 Super on Amazon Bedrock) is constructed in
+# compliance_guardrails.py and passed to LLMRails(config, llm=...). This avoids
+# version-sensitive provider auto-resolution. Override the model with the
+# BEDROCK_MODEL_ID environment variable.
+
+instructions:
+  - type: general
+    content: |
+      You are a financial regulatory compliance assistant. Answer questions
+      about U.S. financial regulations (SEC, FINRA, OCC, FinCEN, CFPB) using the
+      retrieved context, and always cite sources with [SOURCE: citation].
+
+rails:
+  input:
+    flows:
+      - check jailbreak
+      - anonymize pii
+      - check topic relevance
+  output:
+    flows:
+      - generate grounded answer
+      - check hallucination
+      - validate citations

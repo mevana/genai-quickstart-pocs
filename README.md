@@ -156,6 +156,12 @@ This repository contains sample code demonstrating various use cases leveraging 
     ![Screen Recording of Amazon Bedrock Model Playground POC](genai-quickstart-pocs-python/amazon-bedrock-model-playground-poc/images/demo.gif)
     
 
+1. **Amazon Bedrock NVIDIA Nemotron POC**
+    This is sample code demonstrating a financial regulatory compliance assistant built on the NVIDIA stack in Amazon Bedrock: text generation uses NVIDIA Nemotron 3 Super (a fully managed serverless model on Amazon Bedrock) and safety is enforced by NVIDIA NeMo Guardrails, with Amazon Titan Text Embeddings V2 for retrieval. The Streamlit app answers SEC / FINRA / OCC / FinCEN / CFPB compliance questions with grounded, citation-backed responses.
+
+    ![Amazon Bedrock NVIDIA Nemotron POC architecture](genai-quickstart-pocs-python/amazon-bedrock-nvidia-nemotron-poc/images/architecture.png)
+    
+
 1. **Amazon Bedrock PowerPoint Generator**
     This is sample code demonstrates the use of Amazon Bedrock and Generative AI to implement a PowerPoint generator. The application is constructed with a simple streamlit frontend where users can input a topic and get a PowerPoint generated based on the topic. Using Generative AI, the solution creates relevant Wikipedia queries to perform in-depth research on the presentation content.
     
