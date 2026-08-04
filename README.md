@@ -224,6 +224,10 @@ This repository contains sample code demonstrating various use cases leveraging 
     ![Screen Recording of Amazon Bedrock Video Chapter Creator POC](genai-quickstart-pocs-python/amazon-bedrock-video-chapter-creator-poc/images/demo.gif)
     
 
+1. **Amazon Connect AI Agent Evaluation with DeepEval**
+    This is sample code demonstrating an automated evaluation pipeline for Amazon Connect AI Agents using DeepEval with Amazon Bedrock as the LLM judge. It decouples agent invocation (tool-level via an Amazon Bedrock AgentCore Gateway, or end-to-end via the Amazon Lex V2 bot that powers the agent) from LLM-as-judge scoring, and produces CSV, JSON, and Markdown reports designed for Model Risk Management (MRM) documentation aligned with SR 11-7. Unlike most POCs here, this is a command-line/CI evaluation harness rather than a Streamlit app.
+    
+
 
 
 ## Sample Proof of Concepts - .NET

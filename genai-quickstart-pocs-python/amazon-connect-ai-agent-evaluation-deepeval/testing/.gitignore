@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Evaluation output
+reports/
+logs/
+.deepeval/
+.pytest_cache/

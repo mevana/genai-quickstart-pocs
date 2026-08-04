@@ -1,0 +1,47 @@
+# Default configuration for the DeepEval evaluation pipeline.
+#
+# Override any of these values with an alternative config file passed via
+# `python -m src --config path/to/other.yaml`.
+
+aws:
+  region: "us-east-1"
+  # Amazon Bedrock judge model. Cross-region inference profile IDs use a region
+  # prefix (for example, `us.` for US regions). Confirm the model is enabled in
+  # your AWS Region under "Bedrock > Model access" before running evaluations.
+  bedrock_model_id: "global.anthropic.claude-sonnet-4-6"
+
+# Invoker settings.
+invoker:
+  # One of: "gateway" (default, tool-level) or "connect" (end-to-end).
+  default: "connect"
+
+  gateway:
+    # Populated by scripts/setup_env.sh|ps1 (AGENTCORE_GATEWAY_ID).
+    gateway_id_env: "AGENTCORE_GATEWAY_ID"
+    timeout_seconds: 30
+
+  connect:
+    # The Lex V2 bot that powers your Connect AI Agent. Populated by
+    # scripts/setup_env.sh|ps1.
+    bot_id_env: "LEX_BOT_ID"
+    bot_alias_id_env: "LEX_BOT_ALIAS_ID"
+    locale_id_env: "LEX_LOCALE_ID"
+    # How long to wait for the bot to respond before giving up.
+    response_timeout_seconds: 30
+
+# Metric thresholds. See the blog post for rationale.
+metrics:
+  correctness_threshold: 0.5
+  relevancy_threshold: 0.7
+  guardrail_threshold: 0.7
+
+# Test case selection.
+test_cases:
+  # Default file — can be overridden with --test-cases.
+  path: "data/test_cases.csv"
+
+# Report output.
+reports:
+  # Reports are written to <output_dir>/<timestamp>/ with three files:
+  #   detailed_results.csv, summary.json, summary.md
+  output_dir: "reports"

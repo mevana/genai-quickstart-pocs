@@ -1,0 +1,21 @@
+# Local security scan output — not part of the contribution
+security-reports/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Evaluation output
+reports/
+logs/
+.deepeval/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
